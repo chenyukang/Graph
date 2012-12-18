@@ -44,7 +44,7 @@ build obj/liball.a : AR_RULE obj/bit_array_test.o
 #############################################
 # The main all target.
 build obj/graph.exe : CC_LINK_RULE obj/liball.a graph.cpp
-build all: phony  obj/liball.a obj/graph.exe 
+build all: phony  obj/liball.a  obj/graph.exe 
 
 #############################################
 # Make the all target the default.

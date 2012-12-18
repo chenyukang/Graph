@@ -21,23 +21,40 @@ public:
         vec = (int*)malloc(sizeof(int) * vec_size);
         memset(vec, 0, sizeof(int)*vec_size);
     }
-
-    ~Array() {
-        free(vec);
+    Array(const Array& arr) {
+        num = arr.getNum();
+        vec_size = arr.getSize();
+        vec = (int*)malloc(sizeof(int) * vec_size);
+        for(int k =0 ;k<vec_size; k++) {
+            vec[k] = arr.vec[k];
+        }
     }
+    
+    ~Array() {
+        if(vec)
+            free(vec);
+    }
+    
     int getNum() const  { return num; }
     int getSize() const { return vec_size; }
     int setNum(int n) {
-        int prev_sz = vec_size;
-        num = n;
-        vec_size = SIZE(n);
-        int* new_vec = (int*)malloc(sizeof(int) * vec_size);
-        memset(new_vec, 0, sizeof(int)*vec_size);
-        for(int i=0; i<prev_sz; ++i) {
-            new_vec[i] = vec[i];
+        if(vec == 0) {
+            vec_size = SIZE(n);
+            num = n;
+            vec = (int*)malloc(sizeof(int) * vec_size);
+            memset(vec, 0, sizeof(int)* vec_size);
+        } else if(n>num) {
+            int prev_sz = vec_size;
+            num = n;
+            vec_size = SIZE(n);
+            int* new_vec = (int*)malloc(sizeof(int) * vec_size);
+            memset(new_vec, 0, sizeof(int)*vec_size);
+            for(int i=0; i<prev_sz; ++i) {
+                new_vec[i] = vec[i];
+            }
+            free(vec);
+            vec = new_vec;
         }
-        free(vec);
-        vec = new_vec;
     }
 
     int set(int idx) {
@@ -52,7 +69,7 @@ public:
         vec[i] &= ( ~ ( 1 << (idx % WIDTH)));
     }
 
-    int test(int idx) {
+    int test(int idx) const {
         assert(idx < num);
         return ( vec[idx/WIDTH] & ( 1 << (idx % WIDTH)));
     }
@@ -75,10 +92,14 @@ public:
 
     vector<int> getNonZeroBits() const {
         vector<int> res;
+        for(int k=0; k<num; k++) {
+            if( test(k) ) {
+                res.push_back(k);
+            }
+        }
         return res;
     }
     
-private:
     int* vec;
     int  num;
     int  vec_size;
