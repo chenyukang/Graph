@@ -4,3 +4,4 @@
 ./obj
 *.a
 *.d
+.ninja_log
