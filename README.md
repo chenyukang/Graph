@@ -8,7 +8,7 @@ say a -> b, means a will rely on b, b -> c means b will rely on c,
 so given many pairs of such type relationships and a specific node, 
 what is the nodes this node will rely on ?
 
-<example>
+<pre><code>
 for example:
 a->b 
 b->c
@@ -19,7 +19,7 @@ relies_of(a) will output : [b, c, d]
 relies_of(b) will output : [ c ]
 relies_of(e) wiil output : [a, b, c, d]
 
-</example>
+</code></pre>
 
 
 in my solution , I use bitmap to store the relationships, and so the union operation of two bitmap will be simple.
